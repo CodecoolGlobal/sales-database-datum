@@ -1,13 +1,12 @@
-DROP TABLE IF EXISTS order;
+DROP TABLE IF EXISTS orders;
 
-CREATE TABLE order (
+CREATE TABLE orders (
     order_number INT PRIMARY KEY,
-    quantity INT NOT NULL,
     order_line_number INT NOT NULL,
     order_date date NOT NULL,
     status_id INT NOT NULL,
     deal_size text,
-    category_id INT
+    costumer_id INT NOT NULL
 );
 
 DROP TABLE IF EXISTS order_line;
@@ -15,13 +14,16 @@ DROP TABLE IF EXISTS order_line;
 CREATE TABLE order_line (
     order_line_number INT NOT NULL,
     order_number INT NOT NULL,
-    product_code INT NOT NULL
+    product_code INT NOT NULL,
+    price_each INT NOT NULL,
+    quantity INT NOT NULL,
+    category_id INT
 );
 
 DROP TABLE IF EXISTS product;
 
 CREATE TABLE product (
-    product_code INT PRIMARY KEY,
+    product_code text PRIMARY KEY,
     price DECIMAL NOT NULL,
     product_category_id INT NOT NULL ,
     msrp INT NOT NULL
@@ -37,7 +39,8 @@ CREATE TABLE product_category (
 DROP TABLE IF EXISTS customer;
 
 CREATE TABLE customer (
-    name text PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
+    name text,
     customer_representative_id INT,
     phone text NOT NULL,
     address_id INT NOT NULL,
@@ -55,6 +58,7 @@ CREATE TABLE customer_representative (
 DROP TABLE IF EXISTS address;
 
 CREATE TABLE address (
+    id SERIAL PRIMARY KEY,
     territory text,
     country text,
     city text,

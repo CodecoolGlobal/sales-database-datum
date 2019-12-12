@@ -1,10 +1,10 @@
-DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS order_line;
 DROP TABLE IF EXISTS product;
 DROP TABLE IF EXISTS product_category;
+DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS customer;
-DROP TABLE IF EXISTS customer_representative;
 DROP TABLE IF EXISTS address;
+DROP TABLE IF EXISTS customer_representative;
 
 CREATE TABLE address
 (
@@ -65,51 +65,6 @@ CREATE TABLE order_line
     quantity     INT     NOT NULL,
     price        numeric NOT NULL
 );
-
-
-
-
-INSERT INTO address(territory, country, city, state, postal_code, address_line_1, address_line_2)
-SELECT DISTINCT territory,
-                country,
-                city,
-                state,
-                postalcode,
-                addressline1,
-                addressline2
-FROM sales_data_sample;
-
-INSERT INTO customer_representative(first_name, last_name, phone)
-SELECT DISTINCT contactfirstname,
-                contactlastname,
-                phone
-FROM sales_data_sample;
-
-INSERT INTO product_category(product_line)
-SELECT DISTINCT productline
-FROM sales_data_sample;
-
-INSERT INTO product(product_code, msrp)
-SELECT DISTINCT productcode,
-                msrp
-FROM sales_data_sample;
-
-INSERT INTO customer(name)
-SELECT DISTINCT customername
-FROM sales_data_sample;
-
-INSERT INTO orders(order_number, order_date, status)
-SELECT DISTINCT ordernumber,
-                orderdate,
-                status
-FROM sales_data_sample;
-
-INSERT INTO order_line(order_number, product_code, quantity, price)
-SELECT DISTINCT ordernumber,
-                productcode,
-                quantityordered,
-                priceeach
-FROM sales_data_sample;
 
 
 -- ALTER TABLE ONLY orders

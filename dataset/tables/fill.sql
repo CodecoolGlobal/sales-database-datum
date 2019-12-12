@@ -18,23 +18,29 @@ INSERT INTO product_category(product_line)
 SELECT DISTINCT productline
 FROM sales_data_sample;
 
-INSERT INTO product(product_code, msrp)
+INSERT INTO product(product_code, msrp, product_category_id)
 SELECT DISTINCT productcode,
-                msrp
-FROM sales_data_sample;
+                msrp,
+                pc.id
+FROM sales_data_sample sds
+JOIN product_category pc ON pc.product_line = sds.productline;
 
 INSERT INTO customer(name, customer_representative_id, address_id)
-SELECT DISTINCT sds.customername, cr.id as customer_representative_id, a.id
+SELECT DISTINCT sds.customername,
+                cr.id,
+                a.id
 FROM sales_data_sample sds
          JOIN address a ON sds.addressline1 = a.address_line_1
          JOIN customer_representative cr ON sds.phone = cr.phone;
 
 
-INSERT INTO orders(order_number, order_date, status)
-SELECT DISTINCT ordernumber,
-                orderdate,
-                status
-FROM sales_data_sample;
+INSERT INTO orders(order_number, order_date, status)--, customer_id)
+SELECT DISTINCT sds.ordernumber,
+                sds.orderdate,
+                sds.status
+                -- c.id
+FROM sales_data_sample sds;
+-- JOIN customer c ON c.name = sds.customername;
 
 INSERT INTO order_line(order_number, product_code, quantity, price)
 SELECT DISTINCT ordernumber,

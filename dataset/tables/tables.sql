@@ -1,32 +1,27 @@
-DROP TABLE IF EXISTS order;
-DROP TABLE IF EXISTS order_line;
-DROP TABLE IF EXISTS product;
-DROP TABLE IF EXISTS product_category;
-DROP TABLE IF EXISTS customer;
-DROP TABLE IF EXISTS customer_representative;
-DROP TABLE IF EXISTS address;
 
+DROP TABLE IF EXISTS orders;
 
-CREATE TABLE order
-(
-    order_number      INT PRIMARY KEY,
-    order_line_number INT  NOT NULL,
-    order_date        date NOT NULL,
-    status            TEXT NOT NULL,
-    deal_size         text,
-    customer_id       INT  NOT NULL
+CREATE TABLE orders (
+    order_number INT PRIMARY KEY,
+    order_line_number INT NOT NULL,
+    order_date date NOT NULL,
+    status_id INT NOT NULL,
+    deal_size text,
+    costumer_id INT NOT NULL
 );
 
 ALTER TABLE ONLY order
     ADD CONSTRAINT order__customer_id_fk
         FOREIGN KEY (customer_id) REFERENCES customer (id);
 
-CREATE TABLE order_line
-(
-    order_number INT     NOT NULL,
-    product_code INT     NOT NULL,
-    quantity     INT     NOT NULL,
-    price        DECIMAL NOT NULL
+
+CREATE TABLE order_line (
+    order_line_number INT NOT NULL,
+    order_number INT NOT NULL,
+    product_code INT NOT NULL,
+    price_each INT NOT NULL,
+    quantity INT NOT NULL,
+    category_id INT
 );
 
 ALTER TABLE ONLY order_line
@@ -35,11 +30,12 @@ ALTER TABLE ONLY order_line
     ADD CONSTRAINT order__product_code__fk
         FOREIGN KEY (product_code) REFERENCES product (product_code);
 
-CREATE TABLE product
-(
-    product_code        TEXT PRIMARY KEY,
-    product_category_id INT NOT NULL,
-    msrp                INT NOT NULL
+
+CREATE TABLE product (
+    product_code text PRIMARY KEY,
+    price DECIMAL NOT NULL,
+    product_category_id INT NOT NULL ,
+    msrp INT NOT NULL
 );
 
 ALTER TABLE ONLY product
@@ -54,10 +50,9 @@ CREATE TABLE product_category
 );
 
 
-CREATE TABLE customer
-(
-    id                         SERIAL PRIMARY KEY,
-    name                       text,
+CREATE TABLE customer (
+    id SERIAL PRIMARY KEY,
+    name text,
     customer_representative_id INT,
     address_id                 INT NOT NULL
 );
@@ -79,14 +74,14 @@ CREATE TABLE customer_representative
 );
 
 
-CREATE TABLE address
-(
-    id             SERIAL primary key,
-    territory      text,
-    country        text,
-    city           text,
-    state          text,
-    postal_code    text,
+
+CREATE TABLE address (
+    id SERIAL PRIMARY KEY,
+    territory text,
+    country text,
+    city text,
+    state text,
+    postal_code text,
     address_line_1 text,
     address_line_2 text
 );

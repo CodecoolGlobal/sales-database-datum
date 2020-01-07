@@ -66,30 +66,28 @@ ALTER TABLE ONLY customer
 
 CREATE TABLE orders
 (
-    order_number INT PRIMARY KEY,
+    id           SERIAL primary key,
+    order_number INT,
     order_date   text NOT NULL,
-    status       text
---     customer_id  INT NOT NULL
+    status       text,
+    customer_id  INT  NOT NULL
 );
 
--- ALTER TABLE ONLY orders
---     ADD CONSTRAINT orders__customer_id__fk
---             FOREIGN KEY (customer_id) REFERENCES customer (id);
+ALTER TABLE ONLY orders
+    ADD CONSTRAINT orders__customer_id__fk
+        FOREIGN KEY (customer_id) REFERENCES customer (id) ON UPDATE CASCADE;
 
 
 CREATE TABLE order_line
 (
-    order_number INT     NOT NULL,
+    order_id INT     NOT NULL,
     product_code text    NOT NULL,
     quantity     INT     NOT NULL,
-    price        numeric NOT NULL,
-    customer_id  INT     NOT NULL
+    price        numeric NOT NULL
 );
 
 ALTER TABLE ONLY order_line
     ADD CONSTRAINT order_line__order_number__fk
-        FOREIGN KEY (order_number) REFERENCES orders (order_number),
+        FOREIGN KEY (order_id) REFERENCES orders (id) ON UPDATE CASCADE,
     ADD CONSTRAINT order__product_code__fk
-        FOREIGN KEY (product_code) REFERENCES product (product_code),
-    ADD CONSTRAINT order_line__customer_id__fk
-        FOREIGN KEY (customer_id) REFERENCES customer (id);
+        FOREIGN KEY (product_code) REFERENCES product (product_code) ON UPDATE CASCADE;

@@ -38,18 +38,19 @@ FROM sales_data_sample sds
          JOIN customer_representative cr ON sds.phone = cr.phone;
 
 
-INSERT INTO orders(order_number, order_date, status)
+INSERT INTO orders(order_number, order_date, status, customer_id)
 SELECT DISTINCT ordernumber,
                 orderdate,
-                status
-FROM sales_data_sample sds;
-
-
-INSERT INTO order_line(order_number, product_code, quantity, price, customer_id)
-SELECT DISTINCT ordernumber,
-                productcode,
-                quantityordered,
-                priceeach,
+                status,
                 c.id
 FROM sales_data_sample sds
          JOIN customer c ON c.name = sds.customername;
+
+
+INSERT INTO order_line(order_id, product_code, quantity, price)
+SELECT DISTINCT o.id,
+                productcode,
+                quantityordered,
+                priceeach
+FROM sales_data_sample sds
+        JOIN orders o on sds.ordernumber = o.order_number;

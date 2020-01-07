@@ -40,7 +40,7 @@ FROM sales_data_sample sds
 
 INSERT INTO orders(order_number, order_date, status, customer_id)
 SELECT DISTINCT ordernumber,
-                orderdate,
+                (SELECT TO_TIMESTAMP(orderdate,'MM-DD-YYYY HH24:MI')),
                 status,
                 c.id
 FROM sales_data_sample sds

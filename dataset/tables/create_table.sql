@@ -68,7 +68,7 @@ CREATE TABLE orders
 (
     id           SERIAL primary key,
     order_number INT,
-    order_date   text NOT NULL,
+    order_date   timestamp NOT NULL,
     status       text,
     customer_id  INT  NOT NULL
 );
